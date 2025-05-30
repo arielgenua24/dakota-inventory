@@ -1,0 +1,119 @@
+
+  
+  .QR-closeButton {
+    background-color: #f1f7ff;
+    color: #0e93ff;
+    border: 1px solid #0e93ff;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .QR-productTitle,
+  .QR-productDetail {
+    margin: 5px 0;
+  }
+
+
+  .QR-modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .QR-modalContent {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 900px;
+    text-align: center;
+    height: 80%;
+    overflow-y: auto;
+}
+  
+  .QR-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px 0;
+  }
+  
+  .QR-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 150px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .QR-title {
+    font-size: 12px;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  .qr-canvas {
+    width: 100px !important;
+    height: 100px !important;
+  }
+  
+  .QR-buttons {
+    background-color: #ffff;
+    border: 3px solid #f2f2f2;
+    border-radius: 20px;
+    display: flex;
+    width: 80%;
+    position: fixed;
+    bottom: 60px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    padding: 20px 4px 20px 4px;
+  }
+  
+  @media print {
+    .QR-modalOverlay {
+      position: static;
+      background: none;
+      width: 100%;
+      height: auto;
+    }
+  
+    .QR-modalContent {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 80%;
+      max-width: 900px;
+      text-align: center;
+      height: 80%;
+      overflow-y: auto;
+  }
+  
+    .QR-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      justify-content: center;
+    }
+  
+    .QR-item {
+      border: none;
+    }
+  
+  }
+  
+  

@@ -1,0 +1,173 @@
+/* Estilos base */
+.image-form--container {
+    padding: 10px;  /* Padding más pequeño en móvil */
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: rgb(255, 255, 255);
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+  }
+  
+  .image-form--title {
+    font-size: 1.1rem;  /* Texto más pequeño en móvil */
+    font-weight: bold;
+    margin-bottom: 0.8rem;
+    text-align: center;
+  }
+  
+  .image-form--grid {
+    display: grid;
+    grid-template-columns: 2fr;  /* Una columna en móvil */
+    gap: 0.8rem;  /* Espacio más pequeño entre elementos */
+  }
+  
+  .image-form--item {
+    position: relative;
+    width: 100%;
+  }
+  
+  .image-form--preview-container {
+    position: relative;
+    width: 50%;
+  }
+  
+  .image-form--preview-image {
+    width: 50%;
+    height: 100px;  /* Altura más pequeña en móvil */
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .image-form--remove-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 8px;  /* Botón más grande para touch */
+    background-color: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;  /* Área mínima táctil recomendada */
+    min-height: 44px;
+  }
+  
+  .image-form--upload-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 50.3%;
+    height: 200px;  /* Altura más pequeña en móvil */
+    border: 2px dashed #d1d5db;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+  
+  .image-form--upload-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .image-form--upload-text {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;  /* Texto más grande para mejor legibilidad */
+    color: #6b7280;
+  }
+  
+  .image-form--upload-subtext {
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+  
+  .image-form--input {
+    display: none;
+  }
+  
+  .image-form--submit-button {
+    margin-top: 1rem;
+    padding: 12px 20px;  /* Botón más grande para touch */
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;  /* Botón full width en móvil */
+    font-size: 1rem;
+    min-height: 44px;  /* Altura mínima para touch */
+  }
+
+  .image-form--warning {
+    background-color: #fff3cd;
+    color: #856404;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    text-align: center;
+  } 
+  
+  /* Tablet (768px y superior) */
+  @media (min-width: 768px) {
+    .image-form--container {
+      padding: 20px;
+    }
+  
+    .image-form--grid {
+      grid-template-columns: repeat(2, 1fr);  /* 2 columnas en tablet */
+    }
+  
+    .image-form--title {
+      font-size: 1.25rem;
+      text-align: left;
+    }
+  
+    .image-form--submit-button {
+      width: auto;  /* Ancho automático en tablet */
+    }
+  }
+  
+  /* Desktop (1024px y superior) */
+  @media (min-width: 1024px) {
+    .image-form--grid {
+      grid-template-columns: repeat(3, 1fr);  /* 3 columnas en desktop */
+    }
+  
+    .image-form--preview-image,
+    .image-form--upload-label {
+      height: 250px;  /* Altura más grande en desktop */
+    }
+  }
+  
+  /* Prevención de zoom no deseado en iOS */
+  @media screen and (-webkit-min-device-pixel-ratio: 0) {
+    .image-form--upload-text,
+    .image-form--upload-subtext,
+    .image-form--submit-button {
+      font-size: 16px;  /* Previene zoom automático en iOS */
+    }
+  }
+  
+  /* Soporte para modo oscuro */
+  @media (prefers-color-scheme: dark) {
+    .image-form--upload-label {
+      border-color: #4b5563;
+    }
+  
+    .image-form--upload-text,
+    .image-form--upload-subtext {
+      color: #9ca3af;
+    }
+  }

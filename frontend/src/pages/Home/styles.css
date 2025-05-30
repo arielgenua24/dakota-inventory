@@ -1,0 +1,257 @@
+/* Contenedor principal */
+.home-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    padding: 20px;
+    background-image: url('../../assets/Gemini_Generated_Image_6nhcs36nhcs36nhc.jpeg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+  }
+  
+  .home-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    backdrop-filter: blur(5px);
+  }
+  
+  /* Contenido principal con animación de entrada */
+  .home-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 360px;
+    opacity: 0;
+    transform: translateY(1px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  
+  .home-content.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* Título */
+  .home-title {
+    font-size: 36px;
+    font-weight: 400;
+    text-align: center;
+    margin-bottom: 40px;
+    color: rgb(8, 8, 8);
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+    z-index: 400;
+    padding: 29px;
+    background-color: #ffffffb0;
+    border-radius: 40px;
+    /* margin: 6px; */
+    border: 4px solid #ffffff59;
+}
+
+  .catalog-title {
+    font-size: 400;
+    color: rgb(123 237 240);
+    }
+  
+  .home-subtitle {
+    font-size: 24px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.85);
+  }
+  
+  /* Enlaces */
+  .home-link {
+    max-width: 800px;
+    height: 200px;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+  
+  /* Botones */
+  .home-btn {
+    display: flex;
+    width: 100%;
+    border: none;
+    border-radius: 14px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    font-size: 16px;
+    font-weight: 500;
+    color: #222;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    padding: 0;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  
+  .home-btn:hover {
+    transform: scale(1.03) translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  }
+  
+  .home-btn:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+  
+  .btn-content {
+    display: flex;
+    align-items: center;
+    padding: 18px 20px;
+    width: 100%;
+    z-index: 2;
+    position: relative;
+  }
+  
+  .btn-hover-effect {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0));
+    background-size: 200% 100%;
+    background-position: -100% 0;
+    opacity: 0;
+    transition: opacity 0.4s ease, background-position 0.4s ease;
+  }
+  
+  .home-btn:hover .btn-hover-effect {
+    opacity: 1;
+    background-position: 100% 0;
+  }
+  
+  /* Texto de botón */
+  .btn-text {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-left: 20px;
+    flex: 1;
+  }
+  
+  .btn-title {
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 2px;
+  }
+  
+  /* Íconos */
+  .home-icon {
+    color: #333;
+  }
+  
+  /* Subtexto debajo de cada botón */
+  .home-subtext {
+    font-size: 13px;
+    padding: 20px;
+    color: #666;
+    font-weight: 400;
+    width: 90%;
+    display: flex;
+    justify-content: center;
+  }
+  
+  /* "Dinero y notificaciones" */
+  .inbox {
+    background: rgba(45, 45, 45, 0.9);
+  }
+  
+  .inbox .btn-title, .inbox .home-icon {
+    color: #f0c14b;
+  }
+  
+  .inbox .home-subtext {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  
+  /* "Nuevo Pedido" y "Pedidos" */
+  .order {
+    background: rgba(242, 242, 247, 0.9);
+  }
+  
+  .order .btn-title, .order .home-icon {
+    color: #0066cc;
+  }
+  
+  .order:hover {
+    background: rgba(242, 242, 247, 0.95);
+  }
+  
+  /* Sección de órdenes */
+  .home-orders-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+  
+  /* "Catálogo" */
+  .catalog {
+    height: auto;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    display: flex;
+    flex-direction: column;
+    height: 300px;
+  }
+  
+  .catalog .btn-title {
+    font-size: 18px;
+    color: rgb(116, 180, 244);
+    font-weight: 700;
+    letter-spacing: -0.2px;
+  }
+  
+  .catalog .home-icon {
+    color: rgb(101 215 253);
+    width: 40px;
+    height: 40px;
+  }
+  
+  .catalog .home-subtext {
+    font-size: 32px;
+    font-weight: 400;
+    color: #000000;
+}
+  
+  /* Animación para los textos en hover */
+  .home-btn:hover .btn-title {
+    transform: translateX(4px);
+    transition: transform 0.3s ease;
+  }
+  
+  /* Media queries para dispositivos más pequeños */
+  @media (max-width: 480px) {
+    .home-title {
+      font-size: 28px;
+    }
+    
+    .home-subtitle {
+      font-size: 20px;
+    }
+    
+    .btn-title {
+      font-size: 15px;
+    }
+    
+    .home-subtext {
+      font-size: 12px;
+    }
+  }

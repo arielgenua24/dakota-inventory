@@ -1,0 +1,118 @@
+.inbox-container {
+    padding: 2rem;
+    min-height: 100vh;
+    width: 100%;
+    gap: 24px;
+    padding: 24px;
+  }
+  
+  .orders-grid {
+    /* padding: 2rem; */
+    /* min-height: 100vh; */
+    /* width: 100%; */
+    gap: 24px;
+    /* padding: 24px; */
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    /* width: 100%; */
+    gap: 24px;
+    padding: 24px;
+    /* width: calc(33.333% - 24px); */
+    /* margin: 0; */
+    /* min-width: 300px; */
+    /* flex-grow: 1; */
+    display: flex
+;
+}
+  
+  .order-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    background-color: #fff;
+    margin: 0;
+    /* Añadimos min-width para evitar tarjetas muy estrechas */
+    max-width: 290px;
+    /* Quitamos el max-width fijo para permitir el diseño flexible */
+    flex-grow: 1;
+    margin-bottom: 30px;
+  }
+  
+  .order-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: linear-gradient(135deg, #2c3e50, #3498db);
+    color: white;
+  }
+  
+  .order-date {
+    font-size: 0.9rem;
+    opacity: 0.9;
+  }
+  
+  .confetti {
+    font-size: 1.5rem;
+  }
+  
+  .card-content {
+    padding: 1.5rem;
+    margin-bottom: 32px;
+}
+  
+  .total-display {
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .total-display::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, 
+      transparent, 
+      rgba(255, 255, 255, 0.2), 
+      transparent);
+    transform: rotate(45deg);
+  }
+  
+  .total-text {
+    color: white;
+    font-size: 1.8rem;
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .order-details {
+    color: #333;
+    height: 200px;
+  }
+  
+  .detail-line {
+    margin: 0.8rem 0;
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+  
+  .detail-line strong {
+    color: #2c3e50;
+  }
+  
+  .detail-line em {
+    color: #7f8c8d;
+    font-style: normal;
+  }
