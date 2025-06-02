@@ -186,12 +186,13 @@ const Inventory = () => {
           {product.image1 && (
              <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}> 
              <span style={{
-                  backgroundColor: '#f1f1f1',
-                  color: '#333',
+                  backgroundColor: 'rgb(252 244 223)',
+                  color: 'rgb(228 158 38)',
                   padding: '1rem',
                   borderRadius: '4px',
                   marginBottom: '1rem',
-                  fontSize: '0.9rem',
+                  fontSize: '1.3rem',
+                  fontWeight: '700',
                   lineHeight: 1.5,
                   textAlign: 'center'
                 }}>Este producto posee imagenes, actualizas desde aqui para cambiarlas y que afectea a todas sus variantes.</span>

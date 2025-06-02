@@ -48,12 +48,14 @@ function Home() {
             <section className="section-container">
                 <h2 className="section-title">SISTEMA DE INVENTARIO</h2>
                 
-                <Link to="/inbox" className="home-link">
-                    <button className="inventory-button">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#34C759" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="18 15 12 21 6 15"></polyline></svg>
-                        DINERO Y NOTIFICACIONES
-                    </button>
-                </Link>
+                <div className="pulse-wrapper">
+                    <Link to="/inbox" className="home-link notification-link" style={{ marginBottom: '4rem' }}>
+                        <button className="inventory-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#34C759" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="18 15 12 21 6 15"></polyline></svg>
+                            DINERO Y NOTIFICACIONES
+                        </button>
+                    </Link>
+                </div>
 
                 <div className="inventory-grid">
                     <Link to="/new-order" className="home-link">
