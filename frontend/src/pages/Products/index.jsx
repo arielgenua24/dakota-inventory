@@ -21,6 +21,7 @@ function Product() {
 
   const [name, setName] = useState(product.name);
   const [price, setPrice] = useState(product.price);
+  const [curvePrice, setCurvePrice] = useState(product.curvePrice);
   const [stock, setStock] = useState(product.stock);
   const [size, setSize] = useState(product.size);
   const [color, setColor] = useState(product.color);
@@ -45,6 +46,7 @@ function Product() {
 
       setName(fetchedProduct.name);
       setPrice(fetchedProduct.price);
+      setCurvePrice(fetchedProduct.curvePrice);
       setStock(fetchedProduct.stock);
       setSize(fetchedProduct.size);
       setColor(fetchedProduct.color);
@@ -120,6 +122,7 @@ function Product() {
       id,
       name,
       price,
+      curvePrice,
       stock,
       size,
       color,
@@ -182,6 +185,10 @@ function Product() {
           <div className="input-group">
             <span>Precio</span>
             <input type="number" className="product-input" placeholder={`Precio: ${product.price}`} value={price} onChange={handleInputChange(setPrice)} />
+          </div>
+          <div className="input-group">
+            <span>Precio por curva completa</span>
+            <input type="number" className="product-input" placeholder={`Precio de curva: ${product.curvePrice}`} value={curvePrice} onChange={handleInputChange(setCurvePrice)} />
           </div>
           <div className="input-group">
             <span>Cantidad total en stock</span>

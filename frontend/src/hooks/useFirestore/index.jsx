@@ -30,6 +30,7 @@ const useFirestore = () => {
 async function addProduct(
   name,
   price,
+  curvePrice,
   size,
   color,
   category,
@@ -37,7 +38,7 @@ async function addProduct(
   image1,
   image2,
   image3,
-  formattedDate
+  formattedDate,
 ) {
   try {
     const productCode = await incrementProductCode();  
@@ -47,10 +48,11 @@ async function addProduct(
       productCode,
       name,
       price,
+      curvePrice,
       size,
       color,
       category,
-      stock,   
+      stock,
      };
   
     // Agregamos las imágenes solo si existen
@@ -58,7 +60,7 @@ async function addProduct(
     if (image2 !== undefined) data.image2 = image2;
     if (image3 !== undefined) data.image3 = image3;
   
-    console.log(productCode, name, price, size, color, category, stock, image1, image2, image3);
+    console.log(productCode, name, price, curvePrice, size, color, category, stock, image1, image2, image3);
 
     // Agregamos el documento a la colección "products"
     
@@ -399,6 +401,7 @@ async function addProduct(
                 productSnapshot: { // Snapshot de los datos actuales del producto
                     name: productSnapshot.data().name,
                     price: productSnapshot.data().price,
+                    curvePrice: productSnapshot.data().curvePrice !== undefined ? productSnapshot.data().curvePrice : null, // Added curvePrice to order snapshot
                     productCode: productSnapshot.data().productCode,
                     size: productSnapshot.data().size,
                     color: productSnapshot.data().color,

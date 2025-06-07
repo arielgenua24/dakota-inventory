@@ -25,7 +25,7 @@ function Inbox() {
           ordersList.map(async (order) => {
             const products = await getProductsByOrder(order.id)
             const total = products.reduce((acc, item) => {
-              const price = parseFloat(item.productData.price) || 0
+              const price = item.productData?.curvePrice ? parseFloat(item.productData.curvePrice) : parseFloat(item.productData.price)
               return acc + (item.stock * price)
             }, 0)
             

@@ -54,6 +54,7 @@ function ProductFormModal({ handleSubmit, newProduct, setNewProduct, setIsModalO
       ...newProduct,
       name: suggestion.name,
       price: suggestion.price,
+      curvePrice: suggestion.curvePrice,
       color: suggestion.color,
       category: suggestion.category,
     });
@@ -100,6 +101,7 @@ function ProductFormModal({ handleSubmit, newProduct, setNewProduct, setIsModalO
                           <span className="suggestion-input--category">{suggestion.category}</span>
                           <span className="suggestion-input--color">{suggestion.color}</span>
                           <span className="suggestion-input--price">${suggestion.price}</span>
+                          <span className="suggestion-input--price">${suggestion.curvePrice}</span>
                         </li>
                       ))}
                     </ul>
@@ -112,11 +114,13 @@ function ProductFormModal({ handleSubmit, newProduct, setNewProduct, setIsModalO
             Se renderizan los demás campos del formulario.
             En este ejemplo, se excluye "name" ya que lo gestionamos de manera especial.
           */}
-          {['category', 'price', 'size', 'color', 'stock'].map((field) => (
+          {['category', 'price', 'curvePrice', 'size', 'color', 'stock'].map((field) => (
             <div key={field} className="formGroup">
               <label className="label">
                 {field === 'price'
                   ? 'Precio'
+                  : field === 'curvePrice'
+                  ? 'Precio por curva completa'
                   : field === 'size'
                   ? 'Talle'
                   : field === 'color'
@@ -131,7 +135,7 @@ function ProductFormModal({ handleSubmit, newProduct, setNewProduct, setIsModalO
               <>
                 {/* Divs flotantes con las categorías permitidas */}
                 <div className="advice-input">
-                  Majo! Ya no escribas las cateogías, hacé click en la que quieras😉🔥
+                  Hector! Hace click en la cateorias que quieras😉🔥
                 </div>
                 <div className="category-float-container">
                   {[
@@ -145,7 +149,7 @@ function ProductFormModal({ handleSubmit, newProduct, setNewProduct, setIsModalO
                     "frisa",
                     "Camperas",
                     "Chalecos",
-                    "Nuevos",
+                    "Buzos",
                     "PocoStock"
                   ].map((cat) => (
                     <div
@@ -162,7 +166,7 @@ function ProductFormModal({ handleSubmit, newProduct, setNewProduct, setIsModalO
               </>
             )}
             <input
-              type={field === 'price' || field === 'stock' ? 'number' : 'text'}
+              type={field === 'price' || field === 'curvePrice' || field === 'stock' ? 'number' : 'text'}
               value={newProduct[field]}
               onChange={(e) =>
                 setNewProduct({
@@ -174,9 +178,9 @@ function ProductFormModal({ handleSubmit, newProduct, setNewProduct, setIsModalO
               required
               {...(field === 'category' && {
                 pattern:
-                  "^(bermuda|jean|baggy|Clásico|ReIngreso|joggers|parachutte|frisa|Camperas|Chalecos|Nuevos|PocoStock)$",
+                  "^(bermuda|jean|baggy|Clásico|ReIngreso|joggers|parachutte|frisa|Camperas|Chalecos|Buzos|PocoStock)$",
                 title:
-                  "Solo puede escribir: bermuda, jean, baggy, Clásico, ReIngreso, joggers, parachutte, frisa, Camperas, Chalecos, Nuevos, PocoStock",
+                  "Solo puede escribir: bermuda, jean, baggy, Clásico, ReIngreso, joggers, parachutte, frisa, Camperas, Chalecos, Buzos, PocoStock",
               })}
             />
           </div>
