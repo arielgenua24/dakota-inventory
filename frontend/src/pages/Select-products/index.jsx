@@ -99,6 +99,7 @@ function SelectProducts() {
                     <h3 className="productTitle">{product.name}</h3>
                     <p className="productDetail">{product.productCode}</p>
                     <p className="productDetail">Precio: ${product.price}</p>
+                    <p className="productDetail">Precio por curva completa: ${product.curvePrice}</p>
                     <p className="productDetail">Stock: {product.stock}</p>
                     <p className="productDetail">Talle: {product.size}</p>
                     <p className="productDetail">Color: {product.color}</p>

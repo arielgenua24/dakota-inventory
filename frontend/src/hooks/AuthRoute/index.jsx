@@ -8,7 +8,7 @@ function AuthRoute({ children }) {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!user && location.pathname !== "/login") {
+        if (!user && location.pathname !== "/login" || location.pathname == "/") {
             navigate("/login"); // Si no está autenticado, redirigir a login
         } else if (user && location.pathname === "/login") {
             navigate("/home"); // Si ya está autenticado y está en login, enviarlo a home
