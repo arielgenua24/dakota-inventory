@@ -4,7 +4,7 @@ import './styles.css';
 import { useOrder } from '../../hooks/useOrder';
 import { useNavigate } from 'react-router-dom';
 
-const OrderCard = ({ product, quantity }) => {
+const OrderCard = ({ product, quantity, applyCurveSizePrice = false }) => {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
   const { deleteItem } = useOrder() 
@@ -68,9 +68,10 @@ const OrderCard = ({ product, quantity }) => {
       color: '#333',
     },
   };
-  console.log(product)
+  const displayPrice = applyCurveSizePrice ? product.curvePrice : product.price;
 
 
+  console.log(applyCurveSizePrice)
   return (
     <div className="cart-order-card">
       <div className="cart-card-header">
@@ -79,6 +80,11 @@ const OrderCard = ({ product, quantity }) => {
       </div>
       
       <div className="cart-card-content">
+        {applyCurveSizePrice && (
+          <div className="curve-price-notification">
+            <span>Se aplicó el precio por curva completa de manera inteligente</span>
+          </div>
+        )}
         <div className="cart-info-grid">
           <div className="cart-info-item">
             <span className="cart-info-label">Color</span>
@@ -89,13 +95,8 @@ const OrderCard = ({ product, quantity }) => {
             <span className="cart-info-value">{quantity}</span>
           </div>
           <div className="cart-info-item">
-            <span className="cart-info-label">Precio curva completa</span>
-            <span className="cart-info-value">${product.curvePrice}</span>
-          </div>
-         
-          <div className="cart-info-item">
-            <span className="cart-info-label">Precio</span>
-            <span className="cart-info-value">${product.price}</span>
+            <span className="cart-info-label">Precio Unitario</span>
+            <span className="cart-info-value">${displayPrice}</span>
           </div>
           <div className="cart-info-item">
             <span className="cart-info-label">Tamaño</span>
@@ -103,7 +104,7 @@ const OrderCard = ({ product, quantity }) => {
           </div>
           <div className="cart-info-item cart-total">
             <span className="cart-info-label">Total</span>
-            <span className="cart-info-value">${(product.price * quantity).toFixed(2)}</span>
+            <span className="cart-info-value">${(displayPrice * quantity).toFixed(2)}</span>
           </div>
         </div>
       </div>

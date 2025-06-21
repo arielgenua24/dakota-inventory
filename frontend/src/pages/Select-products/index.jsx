@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useFirestoreContext from "../../hooks/useFirestoreContext";
-import  { useOrder }  from "../../hooks/useOrder";
+import { useOrder } from "../../hooks/useOrder";
+import { useProducts } from "../../hooks/useProducts";
 import ProductSearch from "../../components/ProductSearch";
 import qrIcon from '../../assets/icons/icons8-qr-100.png';
 
@@ -12,14 +13,17 @@ function SelectProducts() {
 
       const navigate = useNavigate();
 
-      const { getProducts, } = useFirestoreContext();
+            const { getProducts, } = useFirestoreContext();
       const { findItem, } = useOrder();
+      const { saveProducts, processAndSaveJeans } = useProducts();
 
        useEffect(() => {
           const loadProducts = async () => {
             setIsLoading(true);
             const fetchedProducts = await getProducts();
             setProducts(fetchedProducts);
+            saveProducts(fetchedProducts);
+            await processAndSaveJeans();
             setIsLoading(false);
           };
           loadProducts();

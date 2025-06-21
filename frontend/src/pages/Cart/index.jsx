@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import {useOrder} from '../../hooks/useOrder';
-import useFirestoreContext from '../../hooks/useFirestoreContext'
+import useFirestoreContext from '../../hooks/useFirestoreContext';
+import { useProducts } from '../../hooks/useProducts';
 import OrderCard from '../../components/OrderCard';
 import OrderSummary from '../../components/OrderSumary';
 import { useNavigate } from 'react-router-dom';
@@ -8,11 +9,13 @@ import LoadingComponent from '../../components/Loading';
 
 const Cart = () => {
     const { cart, order, resetOrderValues } = useOrder();
-    const [error, setError ] = useState(false)
-    const { createOrderWithProducts } = useFirestoreContext()
+    const [error, setError] = useState(false);
+    const { createOrderWithProducts } = useFirestoreContext();
+    const { getProcessedJeans } = useProducts();
 
-    const [products, setProduct] = useState([]);
+        const [products, setProduct] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [processedProducts, setProcessedProducts] = useState(false);
 
 
     const navigate = useNavigate();
@@ -32,6 +35,13 @@ const Cart = () => {
         const now = new Date();
         return formatDate(now);
       };
+
+    useEffect(() => {
+        const data = getProcessedJeans();
+        if (data) {
+            setProcessedProducts(data);
+        }
+    }, [getProcessedJeans]);
 
     useEffect(() => {
         if (cart) {
@@ -83,11 +93,21 @@ const Cart = () => {
             <OrderSummary order={order} cart={cart}/>
 
             <span style={{height: '300px', margin: '20px'}}>DETALLES DE LA ORDEN</span>
-
             <ul>
                 {products.map((item, index) => {
-                   console.log(item)
-                    return <OrderCard key={index} product={item.item} quantity={item.quantity} />
+                    const processedProductInfo = processedProducts?.find(p => p.name === item.item.name);
+                    let applyCurvePrice = false;
+
+                    if (processedProductInfo) {
+                        const itemsWithSameNameInCart = cart.filter(cartItem => cartItem.item.name === item.item.name);
+                        const boughtTotalSizes = new Set(itemsWithSameNameInCart.map(cartItem => cartItem.item.size)).size;
+                        
+                        if (processedProductInfo.totalSizes > 0 && boughtTotalSizes === processedProductInfo.totalSizes) {
+                            applyCurvePrice = true;
+                        }
+                    }
+
+                    return <OrderCard key={index} product={item.item} quantity={item.quantity} applyCurveSizePrice={applyCurvePrice} />;
                 })}
             </ul>
 

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import useFirestoreContext from '../../hooks/useFirestoreContext';
+import { useProducts } from '../../hooks/useProducts';
 import ProductFormModal from '../../modals/ProductFormModal';
 import QRModal from '../../modals/Qrmodal';
 import ProductSearch from '../../components/ProductSearch';
@@ -15,6 +16,8 @@ import uploadImages from '../../services/uploadImage';
 import './styles.css';
 
 const Inventory = () => {
+  const { clearProducts } = useProducts();
+
   const [products, setProducts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -41,6 +44,7 @@ const Inventory = () => {
 
 
   useEffect(() => {
+    clearProducts(); // Si el usuario va a editar los productos o cargarlos, entonces debemos eliminar el sessionStorage para que no se rompa a la hora de hacer otro pedido.
     const loadProducts = async () => {
       setIsLoading(true)
       const fetchedProducts = await getProducts();
