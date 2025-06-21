@@ -53,50 +53,55 @@ const Inventory = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-  
+
     let imageURLs = [];
-  
+
     // Si existe al menos una imagen, se suben las que no sean vacías.
     if (images.image1 || images.image2 || images.image3) {
       const imagesToUpload = [images.image1, images.image2, images.image3].filter((img) => img !== '');
       imageURLs = await uploadImages(imagesToUpload);
-  
+
       // Completar hasta tres elementos en caso de faltar alguno.
       while (imageURLs.length < 3) {
         imageURLs.push({ url: undefined });
       }
     }
-  
+
+    const productToSave = {
+      ...newProduct,
+      name: `${newProduct.name} ${newProduct.color}`,
+    };
+
     // Se llama a addProduct según se hayan subido imágenes o no.
     if (imageURLs.length > 0) {
       await addProduct(
-        newProduct.name,
-        newProduct.price,
-        newProduct.curvePrice,
-        newProduct.size,
-        newProduct.color,
-        newProduct.category,
-        newProduct.stock,
+        productToSave.name,
+        productToSave.price,
+        productToSave.curvePrice,
+        productToSave.size,
+        productToSave.color,
+        productToSave.category,
+        productToSave.stock,
         imageURLs[0].url,
         imageURLs[1].url,
         imageURLs[2].url
       );
     } else {
       await addProduct(
-        newProduct.name,
-        newProduct.price,
-        newProduct.curvePrice,
-        newProduct.size,
-        newProduct.color,
-        newProduct.category,
-        newProduct.stock
+        productToSave.name,
+        productToSave.price,
+        productToSave.curvePrice,
+        productToSave.size,
+        productToSave.color,
+        productToSave.category,
+        productToSave.stock
       );
     }
-  
+
     setIsModalOpen(false);
     const updatedProducts = await getProducts();
     setProducts(updatedProducts);
-  
+
     // Resetea el estado del nuevo producto.
     setNewProduct({
       name: '',

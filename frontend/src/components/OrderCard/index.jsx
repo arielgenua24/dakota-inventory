@@ -89,12 +89,17 @@ const OrderCard = ({ product, quantity }) => {
             <span className="cart-info-value">{quantity}</span>
           </div>
           <div className="cart-info-item">
-            <span className="cart-info-label">Tamaño</span>
-            <span className="cart-info-value">{product.size}</span>
+            <span className="cart-info-label">Precio curva completa</span>
+            <span className="cart-info-value">${product.curvePrice}</span>
           </div>
+         
           <div className="cart-info-item">
             <span className="cart-info-label">Precio</span>
             <span className="cart-info-value">${product.price}</span>
+          </div>
+          <div className="cart-info-item">
+            <span className="cart-info-label">Tamaño</span>
+            <span className="cart-info-value">{product.size}</span>
           </div>
           <div className="cart-info-item cart-total">
             <span className="cart-info-label">Total</span>

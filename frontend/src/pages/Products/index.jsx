@@ -19,12 +19,13 @@ function Product() {
 
   const { getProduct, updateProduct, deleteProduct } = useFirestoreContext();
 
-  const [name, setName] = useState(product.name);
-  const [price, setPrice] = useState(product.price);
-  const [curvePrice, setCurvePrice] = useState(product.curvePrice);
-  const [stock, setStock] = useState(product.stock);
-  const [size, setSize] = useState(product.size);
-  const [color, setColor] = useState(product.color);
+  const [name, setName] = useState('');
+  const [price, setPrice] = useState('');
+  const [curvePrice, setCurvePrice] = useState('');
+  const [stock, setStock] = useState('');
+  const [size, setSize] = useState('');
+  const [color, setColor] = useState('');
+  const [originalColor, setOriginalColor] = useState('');
   const [images, setImages] = useState([]);
   const [oldImages, setOldImages] = useState([]);
   const [newImages, setNewImages] = useState([]);
@@ -50,12 +51,19 @@ function Product() {
       setStock(fetchedProduct.stock);
       setSize(fetchedProduct.size);
       setColor(fetchedProduct.color);
+      setOriginalColor(fetchedProduct.color);
       setImages(() => ([{ image: fetchedProduct.image1}, {image: fetchedProduct.image2}, {image: fetchedProduct.image3}]));      
       setOldImages(() => ([{ image: fetchedProduct.image1}, {image: fetchedProduct.image2}, {image: fetchedProduct.image3}]));
       setIsLoading(false);
     };
     loadProducts();
   }, [getProduct, id, newSavedProduct]);
+
+  useEffect(() => {
+    if (color !== originalColor) {
+        setName(currentName => currentName.replace(originalColor, '').trim());
+    }
+  }, [color, originalColor]);
 
 
   const loadImages = async () => {
@@ -118,9 +126,12 @@ function Product() {
     
     console.log(newImages);
 
+    const baseName = name.replace(originalColor, '').trim();
+    const finalName = `${baseName} ${color}`;
+
     const updatedProduct = {
       id,
-      name,
+      name: finalName,
       price,
       curvePrice,
       stock,
