@@ -82,7 +82,7 @@ const OrderCard = ({ product, quantity, applyCurveSizePrice = false }) => {
       <div className="cart-card-content">
         {applyCurveSizePrice && (
           <div className="curve-price-notification">
-            <span>Se aplicó el precio por curva completa de manera inteligente</span>
+            <span>✅ Se aplicó el precio por curva completa</span>
           </div>
         )}
         <div className="cart-info-grid">
