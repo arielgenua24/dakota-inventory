@@ -1,0 +1,10 @@
+# Bugs
+- Aplicar el precio de curva completa cuando se verifican pedidos.
+    Esto nos obligara a que rehacer el algortimo de precio de curva desde el lado de verificacion de pedidos. Para asi no rehacer el CRUD en la db.
+
+
+# Todo
+- nueva HOME UI en /Inventory que muestre en cada item un boton que diga:
+    - Ver imagenes y variaciones. Esto nos permitira crear un modal que muestre solo los productos que son
+    iguales a ese producto, y con ello arriba de todo, el primer producto que mostraremos es el que muestra las imagenes y abajo los demas. 
+    Asi el usuario podra ver las imagenes y variaciones de un producto.

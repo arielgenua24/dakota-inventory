@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import useFirestoreContext from '../../hooks/useFirestoreContext';
 import { useOrder } from '../../hooks/useOrder';
+import { useProducts } from '../../hooks/useProducts';
 import LoadingComponent from '../../components/Loading';
 import { useParams, useSearchParams } from 'react-router-dom';
 import QrVerifyProduct from '../../components/QrVerifyProduct';
@@ -17,25 +18,33 @@ const ProductVerification = () => {
   const [loading, setLoading] = useState(false);
   const [isSearchByQrEnabled, setisSearchByQrEnabled] = useState(false);
   const { orderId } = useParams();
-  const [verifiedProducts, setVerifiedProducts] = useState(0);
-  const [isLoading, setIsLoading] = useState(false)
+    const [verifiedProducts, setVerifiedProducts] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [processedProducts, setProcessedProducts] = useState(null);
 
-  const {  updateOrder, getProductsByOrder } = useFirestoreContext();
-  const { setOrdersState } = useOrder()
+    const {  updateOrder, getProductsByOrder } = useFirestoreContext();
+  const { setOrdersState } = useOrder();
+  const { getProcessedJeans } = useProducts();
 
   const orderEstado = searchParams.get("orderEstado");
   console.log(orderEstado)
 
-  useEffect(() => {
+    useEffect(() => {
     const fetchProducts = async () => {
-        setLoading(true);
+      setLoading(true);
       const productsData = await getProductsByOrder(orderId);
       setProducts(productsData);
-      console.log(productsData)
       setLoading(false);
     };
     fetchProducts();
-  }, [orderId]);
+  }, [orderId, getProductsByOrder]);
+
+  useEffect(() => {
+    const data = getProcessedJeans();
+    if (data) {
+        setProcessedProducts(data);
+    }
+  }, [getProcessedJeans]);
 
   const handleVerify = (productId) => {
     console.log(productId)
@@ -115,7 +124,37 @@ const ProductVerification = () => {
 
        
 
-      {products.map((product) => (
+            {Object.values(
+        products.reduce((acc, product) => {
+          const name = product.productData?.name || product.productSnapshot?.name;
+          if (!acc[name]) {
+            acc[name] = [];
+          }
+          acc[name].push(product);
+          return acc;
+        }, {})
+      ).map((groupedProducts, index) => {
+        const firstProduct = groupedProducts[0];
+        const productName = firstProduct.productData?.name || firstProduct.productSnapshot?.name;
+        const processedProductInfo = processedProducts?.find(p => p.name === productName);
+        let applyCurvePrice = false;
+
+        if (processedProductInfo) {
+            const sizesInOrder = new Set(groupedProducts.map(p => p.productData?.size || p.productSnapshot?.size));
+            if (processedProductInfo.totalSizes > 0 && sizesInOrder.size === processedProductInfo.totalSizes) {
+                applyCurvePrice = true;
+            }
+        }
+
+        return (
+          <div key={index} className="verification-group-item">
+            <h2 className="group-title">{productName}</h2>
+            {applyCurvePrice && (
+              <div className="curve-price-notification">
+                <span>✅ Se aplicó el precio por curva completa</span>
+              </div>
+            )}
+            {groupedProducts.map(product => (
         <div key={product.id} className="verification-product-item">
           <ProductVerificationStatus orderStatus={orderEstado} product={product} verifiedProducts={verifiedProducts} setVerifiedProducts={setVerifiedProducts}/>
 
@@ -136,12 +175,12 @@ const ProductVerification = () => {
                 <strong>Talle:</strong> {product.productData.size}
               </p>
               <p>
-                <strong>Precio:</strong> {product.productData.price}
+                <strong>Precio:</strong> ${applyCurvePrice ? product.productData.curvePrice : product.productData.price}
               </p>
               <div className="total-price-container">
                 <p className="total-price">
                   <strong>Total:</strong> 
-                  <span>${product.stock * product.productData.price}</span>
+                  <span>${product.stock * (applyCurvePrice ? product.productData.curvePrice : product.productData.price)}</span>
                 </p>
               </div>
             </div>
@@ -163,7 +202,7 @@ const ProductVerification = () => {
                 <strong>Talle:</strong> {product.productSnapshot.size}
               </p>
               <p>
-                <strong>Precio:</strong> {product.productSnapshot.price}
+                <strong>Precio:</strong> ${applyCurvePrice ? product.productSnapshot.curvePrice : product.productSnapshot.price}
               </p>
           </div>
            
@@ -187,6 +226,9 @@ const ProductVerification = () => {
           
         </div>
       ))}
+          </div>
+        );
+      })}
       {isSearchByQrEnabled && <QrVerifyProduct  
         handleVerify={handleVerify}
         setisSearchByQrEnabled={setisSearchByQrEnabled}
