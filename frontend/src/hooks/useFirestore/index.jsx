@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
+
 
 import { db } from "../../firebaseSetUp";
 
@@ -21,8 +20,7 @@ import {
 const useFirestore = () => {
   const [products, setProducts] = useState([]);
 
-  const currentDate = new Date();
-  const formattedDate = format(currentDate, 'yyyy-MM-dd HH:mm:ss', { locale: es });
+
 
   //OKAY, producto agregado
   
@@ -38,7 +36,6 @@ async function addProduct(
   image1,
   image2,
   image3,
-  formattedDate,
 ) {
   try {
     const productCode = await incrementProductCode();  
@@ -76,65 +73,9 @@ async function addProduct(
 
 
 
-  /*const addProduct = async (name, price, size, color, category, stock, image1, image2, image3) => {
-    console.log(name, price, size, color, category, stock, image1, image2, image3);
-    try {
-        //obtenemos el codigo de el producto
-    const productCode = await incrementProductCode();  
-    console.log(productCode);
-    console.log(category)
-      const docRef = await addDoc(collection(db, "products"), {
-        productCode,
-        name,
-        price,
-        size,
-        color,
-        category,
-        stock,
-        image1,
-        image2,
-        image3,
-        updatedAt: formattedDate,
-      });
-      console.log("Producto agregado con ID: ", docRef.id);
-      const productId = docRef.id;
-      return productId;
-    } catch (e) {
-      console.error("Error agregando producto: ", e);
-    }
-  }; */
 
-  /*const addProduct = async (name, price, category, specialTag, images, sizes) => {
-    try {
-      // Obtener el código del producto
-      const productCode = await incrementProductCode();
-      
-      const newProduct = {
-        productCode,
-        name,
-        category, // Ahora se recibe como parámetro
-        specialTag,
-        images, // Recibe un objeto con img1, img2, img3
-        price,
-        state: "", // Por defecto vacío
-        sizes, // Un array de objetos con { size, quantity }
-        updatedAt: formattedDate
-      };
-  
-      // Guardar en Firestore
-      const docRef = await addDoc(collection(db, "products"), newProduct);
-      console.log("Producto agregado con ID:", docRef.id);
-  
-      // Obtener todos los productos actualizados
-      const productsSnapshot = await getDocs(collection(db, "products"));
-      const products = productsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-  
-      return products; // Devuelve el array de productos
-    } catch (e) {
-      console.error("Error agregando producto:", e);
-      return [];
-    }
-  }; */
+
+
 
 
   // Obtener todos los products
@@ -173,8 +114,7 @@ async function addProduct(
     console.log(productRef);
 
     return updateDoc(productRef, {
-     ...values,
-    updatedAt: formattedDate,
+     ...values
     });
   }
 
@@ -407,7 +347,8 @@ async function addProduct(
                     color: productSnapshot.data().color,
                 },
                 stock: quantityNumber,
-                verified: 0
+                verified: 0,
+                applyCurvePrice: element.applyCurvePrice // Añadir el campo applyCurvePrice
             });
 
             // Actualizar el stock del producto en el inventario

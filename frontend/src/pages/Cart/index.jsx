@@ -44,10 +44,24 @@ const Cart = () => {
     }, [getProcessedJeans]);
 
     useEffect(() => {
-        if (cart) {
-            setProduct(cart);
+        if (cart && processedProducts) {
+            const updatedProducts = cart.map(item => {
+                const processedProductInfo = processedProducts.find(p => p.name === item.item.name);
+                let applyCurvePrice = false;
+
+                if (processedProductInfo) {
+                    const itemsWithSameNameInCart = cart.filter(cartItem => cartItem.item.name === item.item.name);
+                    const boughtTotalSizes = new Set(itemsWithSameNameInCart.map(cartItem => cartItem.item.size)).size;
+                    
+                    if (processedProductInfo.totalSizes > 0 && boughtTotalSizes === processedProductInfo.totalSizes) {
+                        applyCurvePrice = true;
+                    }
+                }
+                return { ...item, applyCurvePrice };
+            });
+            setProduct(updatedProducts);
         }
-    }, [cart]);
+    }, [cart, processedProducts]);
 
     const handleSubmit = async () => {
       setIsLoading(true)
@@ -95,19 +109,7 @@ const Cart = () => {
             <span style={{height: '300px', margin: '20px'}}>DETALLES DE LA ORDEN</span>
             <ul>
                 {products.map((item, index) => {
-                    const processedProductInfo = processedProducts?.find(p => p.name === item.item.name);
-                    let applyCurvePrice = false;
-
-                    if (processedProductInfo) {
-                        const itemsWithSameNameInCart = cart.filter(cartItem => cartItem.item.name === item.item.name);
-                        const boughtTotalSizes = new Set(itemsWithSameNameInCart.map(cartItem => cartItem.item.size)).size;
-                        
-                        if (processedProductInfo.totalSizes > 0 && boughtTotalSizes === processedProductInfo.totalSizes) {
-                            applyCurvePrice = true;
-                        }
-                    }
-
-                    return <OrderCard key={index} product={item.item} quantity={item.quantity} applyCurveSizePrice={applyCurvePrice} />;
+                    return <OrderCard key={index} product={item.item} quantity={item.quantity} applyCurveSizePrice={item.applyCurvePrice} />;
                 })}
             </ul>
 

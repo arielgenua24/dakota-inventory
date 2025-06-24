@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import useFirestoreContext from '../../hooks/useFirestoreContext';
 import { useOrder } from '../../hooks/useOrder';
-import { useProducts } from '../../hooks/useProducts';
+
 import LoadingComponent from '../../components/Loading';
 import { useParams, useSearchParams } from 'react-router-dom';
 import QrVerifyProduct from '../../components/QrVerifyProduct';
@@ -20,11 +20,9 @@ const ProductVerification = () => {
   const { orderId } = useParams();
     const [verifiedProducts, setVerifiedProducts] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [processedProducts, setProcessedProducts] = useState(null);
 
     const {  updateOrder, getProductsByOrder } = useFirestoreContext();
   const { setOrdersState } = useOrder();
-  const { getProcessedJeans } = useProducts();
 
   const orderEstado = searchParams.get("orderEstado");
   console.log(orderEstado)
@@ -39,13 +37,7 @@ const ProductVerification = () => {
     fetchProducts();
   }, [orderId, getProductsByOrder]);
 
-  useEffect(() => {
-    const data = getProcessedJeans();
-    
-    if (data) {
-        setProcessedProducts(data);
-    }
-  }, [getProcessedJeans]);
+
 
   const handleVerify = (productId) => {
     console.log(productId)
@@ -120,113 +112,70 @@ const ProductVerification = () => {
 
                 Verificar escaner de barras
               </button>
-              
         </div>)}
 
-       
-
-            {Object.values(
-        products.reduce((acc, product) => {
-          const name = product.productSnapshot?.name;
-          if (!acc[name]) {
-            acc[name] = [];
-          }
-          acc[name].push(product);
-          return acc;
-        }, {})
-      ).map((groupedProducts, index) => {
-        const firstProduct = groupedProducts[0];
-        const productName = firstProduct.productSnapshot?.name;
-        const processedProductInfo = processedProducts?.find(p => p.name === productName);
-        let applyCurvePrice = false;
-
-        if (processedProductInfo) {
-            const sizesInOrder = new Set(groupedProducts.map(p => p.productSnapshot?.size));
-            if (processedProductInfo.totalSizes > 0 && sizesInOrder.size === processedProductInfo.totalSizes) {
-                applyCurvePrice = true;
-            }
-        }
-
+        {products.map(product => {
+        const applyCurvePrice = product.applyCurvePrice;
         return (
-          <div key={index} className="verification-group-item">
-            <h2 className="group-title">{productName}</h2>
+          <div key={product.id} className="verification-group-item">
+            <h2 className="group-title">{product.productSnapshot.name}</h2>
             {applyCurvePrice && (
               <div className="curve-price-notification">
                 <span>✅ Se aplicó el precio por curva completa</span>
               </div>
             )}
-            {groupedProducts.map(product => (
-        <div key={product.id} className="verification-product-item">
-          <ProductVerificationStatus orderStatus={orderEstado} product={product} verifiedProducts={verifiedProducts} setVerifiedProducts={setVerifiedProducts}/>
+            <div className="verification-product-item">
+              <ProductVerificationStatus orderStatus={orderEstado} product={product} verifiedProducts={verifiedProducts} setVerifiedProducts={setVerifiedProducts}/>
 
-          <h3>Codigo del producto: {product.productSnapshot.productCode}</h3>
-          {orderEstado == 'listo para despachar' ? (<div className="verification-complete">
-          <div className="product-details">
-            <p className="stock-info">
-              Total verificado: <span>{product.stock} unidades</span>
-            </p>
-            <div className="product-specs">
-              <p>
-                <strong>Producto:</strong> {product.productSnapshot.name}
-              </p>
-              <p>
-                <strong>Color:</strong> {product.productSnapshot.color}
-              </p>
-              <p>
-                <strong>Talle:</strong> {product.productSnapshot.size}
-              </p>
-              <p>
-                <strong>Precio:</strong> ${applyCurvePrice ? product.productSnapshot.curvePrice : product.productSnapshot.price}
-              </p>
-              <div className="total-price-container">
-                <p className="total-price">
-                  <strong>Total:</strong> 
-                  <span>${product.stock * (applyCurvePrice ? product.curvePrice : product.productSnapshot.price)}</span>
-                </p>
-              </div>
+              <h3>Codigo del producto: {product.productSnapshot.productCode}</h3>
+              {orderEstado === 'listo para despachar' ? (
+                <div className="verification-complete">
+                  <div className="product-details">
+                    <p className="stock-info">
+                      Total verificado: <span>{product.stock} unidades</span>
+                    </p>
+                    <div className="product-specs">
+                      <p><strong>Producto:</strong> {product.productSnapshot.name}</p>
+                      <p><strong>Color:</strong> {product.productSnapshot.color}</p>
+                      <p><strong>Talle:</strong> {product.productSnapshot.size}</p>
+                      <p><strong>Precio:</strong> ${applyCurvePrice ? product.productSnapshot.curvePrice : product.productSnapshot.price}</p>
+                      <div className="total-price-container">
+                        <p className="total-price">
+                          <strong>Total:</strong> 
+                          <span>${product.stock * (applyCurvePrice ? product.productSnapshot.curvePrice : product.productSnapshot.price)}</span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div> 
+                  <p>Verificados: <span>{product.verified}</span> de {product.stock}</p>
+                  <p><strong>Producto:</strong> {product.productSnapshot.name}</p>
+                  <p><strong>Color:</strong> {product.productSnapshot.color}</p>
+                  <p><strong>Talle:</strong> {product.productSnapshot.size}</p>
+                  <p><strong>Precio:</strong> ${applyCurvePrice ? product.productSnapshot.curvePrice : product.productSnapshot.price}</p>
+                </div>
+              )}
+              {orderEstado !== 'listo para despachar' && (
+                <div>
+                  <button 
+                    className='btn-verify'
+                    onClick={() => handleVerify(product.id)}
+                    disabled={product.verified >= product.stock}
+                  >
+                    Verificar uno manualmente
+                  </button>
+                  <button 
+                    className='btn-verify'
+                    style={{background: 'red', color: 'white'}}
+                    onClick={() => handleReset(product.id)}
+                  >
+                    Empezar de nuevo la verification
+                  </button>
+                </div>
+              )}
             </div>
-          </div>
-</div>)
-         : (
-          <div> 
-               <p>
-            Verificados: <span>{product.verified}</span> de {product.stock}
-          </p>
-
-            <p>
-                <strong>Producto:</strong> {product.productSnapshot.name}
-              </p>
-              <p>
-                <strong>Color:</strong> {product.productSnapshot.color}
-              </p>
-              <p>
-                <strong>Talle:</strong> {product.productSnapshot.size}
-              </p>
-              <p>
-                <strong>Precio:</strong> ${applyCurvePrice ? product.productSnapshot.curvePrice : product.productSnapshot.price}
-              </p>
-          </div>
-           
-          
-          )}
-          {orderEstado !== 'listo para despachar' && (<div><button 
-              className='btn-verify'
-              onClick={() => handleVerify(product.id)}
-              disabled={product.verified >= product.stock}
-            >
-              Verificar uno manualmente
-            </button>
-            <button 
-            className='btn-verify'
-            style={{background: 'red', color: 'white'}}
-              onClick={() => handleReset(product.id)}
-            >
-              Empezar de nuevo la verification
-            </button></div>)}
-            
-          
-        </div>
-      ))}
           </div>
         );
       })}
