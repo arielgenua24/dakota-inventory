@@ -41,6 +41,7 @@ const ProductVerification = () => {
 
   useEffect(() => {
     const data = getProcessedJeans();
+    
     if (data) {
         setProcessedProducts(data);
     }
@@ -126,7 +127,7 @@ const ProductVerification = () => {
 
             {Object.values(
         products.reduce((acc, product) => {
-          const name = product.productData?.name || product.productSnapshot?.name;
+          const name = product.productSnapshot?.name;
           if (!acc[name]) {
             acc[name] = [];
           }
@@ -135,12 +136,12 @@ const ProductVerification = () => {
         }, {})
       ).map((groupedProducts, index) => {
         const firstProduct = groupedProducts[0];
-        const productName = firstProduct.productData?.name || firstProduct.productSnapshot?.name;
+        const productName = firstProduct.productSnapshot?.name;
         const processedProductInfo = processedProducts?.find(p => p.name === productName);
         let applyCurvePrice = false;
 
         if (processedProductInfo) {
-            const sizesInOrder = new Set(groupedProducts.map(p => p.productData?.size || p.productSnapshot?.size));
+            const sizesInOrder = new Set(groupedProducts.map(p => p.productSnapshot?.size));
             if (processedProductInfo.totalSizes > 0 && sizesInOrder.size === processedProductInfo.totalSizes) {
                 applyCurvePrice = true;
             }
@@ -158,7 +159,7 @@ const ProductVerification = () => {
         <div key={product.id} className="verification-product-item">
           <ProductVerificationStatus orderStatus={orderEstado} product={product} verifiedProducts={verifiedProducts} setVerifiedProducts={setVerifiedProducts}/>
 
-          <h3>Codigo del producto: {product.productData.productCode}</h3>
+          <h3>Codigo del producto: {product.productSnapshot.productCode}</h3>
           {orderEstado == 'listo para despachar' ? (<div className="verification-complete">
           <div className="product-details">
             <p className="stock-info">
@@ -166,21 +167,21 @@ const ProductVerification = () => {
             </p>
             <div className="product-specs">
               <p>
-                <strong>Producto:</strong> {product.productData.name}
+                <strong>Producto:</strong> {product.productSnapshot.name}
               </p>
               <p>
-                <strong>Color:</strong> {product.productData.color}
+                <strong>Color:</strong> {product.productSnapshot.color}
               </p>
               <p>
-                <strong>Talle:</strong> {product.productData.size}
+                <strong>Talle:</strong> {product.productSnapshot.size}
               </p>
               <p>
-                <strong>Precio:</strong> ${applyCurvePrice ? product.productData.curvePrice : product.productData.price}
+                <strong>Precio:</strong> ${applyCurvePrice ? product.productSnapshot.curvePrice : product.productSnapshot.price}
               </p>
               <div className="total-price-container">
                 <p className="total-price">
                   <strong>Total:</strong> 
-                  <span>${product.stock * (applyCurvePrice ? product.productData.curvePrice : product.productData.price)}</span>
+                  <span>${product.stock * (applyCurvePrice ? product.curvePrice : product.productSnapshot.price)}</span>
                 </p>
               </div>
             </div>

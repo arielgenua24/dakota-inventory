@@ -1,6 +1,5 @@
 # Bugs
-- Aplicar el precio de curva completa cuando se verifican pedidos.
-    Esto nos obligara a que rehacer el algortimo de precio de curva desde el lado de verificacion de pedidos. Para asi no rehacer el CRUD en la db.
+- Update the function createOrderWithProducts to apply when an order is created. It works bad when the order is created from the cart because it doesn't save the products which were bought. So wehen users update the preice, the order update the price of the products which were bought. 
 
 
 # Todo
