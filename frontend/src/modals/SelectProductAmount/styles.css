@@ -70,14 +70,15 @@ font-weight: bold;
 }
 
 .add-to-cart-button {
-background-color: #0FCA37;
-color: #fff;
-border: none;
-padding: 12px 24px;
-width: 100%;
-font-size: 16px;
-cursor: pointer;
-border-radius: 4px;
+  background-color: #0FCA37;
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  width: 100%;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-bottom: 20px;
 }
 
 .add-to-cart-button:hover {

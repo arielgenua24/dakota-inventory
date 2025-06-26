@@ -16,13 +16,6 @@
     gap: 16px;
   }
   
-  .productCard {
-    border: 1px solid #e2e2e2;
-    padding: 16px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    width: 256px;
-  }
   
   .productTitle {
     font-weight: bold;

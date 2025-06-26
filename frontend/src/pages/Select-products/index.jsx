@@ -112,12 +112,38 @@ function SelectProducts() {
                     {
                     findItem(product) ? 
                     ( <button
+                        style={{
+                          backgroundColor: 'rgb(255 251 182)',
+                          border: '3px solid rgb(255 251 182)',
+                          borderRadius: '20px',
+                          color: 'rgb(97, 81, 1)',
+                          fontSize: '16px',
+                          fontWeight: 'bold',
+                          padding: '10px 15px',
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          gap: '5px'
+                        }}
                         className="edit-in-cart-button"
                         onClick={() => navigate(`/select-product-amount/${product.id}?in-cart=true`)}
                       >
                         MODIFICAR CANTIDAD
                       </button>
-                      ):(<button
+                      ):(<button  
+                        style={{
+                          backgroundColor: '#F1F7FF',
+                          border: '1px solid #0990FF',
+                          borderRadius: '20px',
+                          color: '#0990FF',
+                          fontSize: '16px',
+                          fontWeight: 'bold',
+                          padding: '10px 15px',
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          gap: '5px'
+                        }}
                         className="add-to-cart-button"
                         onClick={() => navigate(`/select-product-amount/${product.id}`)}
                       >
