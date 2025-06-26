@@ -3,13 +3,15 @@ import searchProducts from "../../utils/searchFn";
 import { useNavigate } from "react-router-dom";
 import EditProductBtn from "../EditProduct";
 import QRButton from "../QrGenerateBtn";
-import { Search, X, Filter, FileX } from "lucide-react";
+import { Search, X } from "lucide-react";
 import './styles.css';
+import { useOrder } from "../../hooks/useOrder";
 
 function ProductSearch({ products, setQRcode, isCartEnabled }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const navigate = useNavigate();
+  const { findItem } = useOrder();
 
   const [activeFilters, setActiveFilters] = useState({
     inStock: false,
@@ -29,13 +31,6 @@ function ProductSearch({ products, setQRcode, isCartEnabled }) {
   const clearSearch = () => {
     setSearchTerm("");
     setIsFocused(false);
-  };
-
-  const toggleFilter = (filterKey) => {
-    setActiveFilters(prev => ({
-      ...prev,
-      [filterKey]: !prev[filterKey]
-    }));
   };
 
   return (
@@ -92,8 +87,6 @@ function ProductSearch({ products, setQRcode, isCartEnabled }) {
                   </span>
                 </div>
 
-
-
                 <div className="product-actions">
                   {!isCartEnabled && (<> 
                   <EditProductBtn product_id={product.id} />  
@@ -102,32 +95,46 @@ function ProductSearch({ products, setQRcode, isCartEnabled }) {
                     onQRGenerate={() => setQRcode(product)} 
                   /> 
                   </>)}
-                  {isCartEnabled && 
-
-                    (<div style={{display: 'flex', flexDirection: 'row'}}>  
-                      <button
-                        className="search-add-to-cart-button"
-                        onClick={() => navigate(`/select-product-amount/${product.id}`)}
-                      >
-                        AGREGAR AL CARRITO
-                      </button> 
-                      
-                      <button
-                      style={{marginTop: '10px', scale:'0.75'}}
-                        onClick={() => navigate(`/select-product-amount/${product.id}`)}
-                      >
-                        MODIFICAR CANTIDAD
-                      </button>
-
-
-
-                      </div>)
-                      
-                      }
-                 
+                  {isCartEnabled && (
+                        findItem(product) ? (
+                          <button
+                            style={{
+                              backgroundColor: 'rgb(255 251 182)',
+                              border: '3px solid rgb(255 251 182)',
+                              borderRadius: '20px',
+                              color: 'rgb(97, 81, 1)',
+                              fontSize: '16px',
+                              fontWeight: 'bold',
+                              padding: '10px 15px',
+                              display: 'flex',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              gap: '5px'
+                            }}
+                            className="edit-in-cart-button"
+                            onClick={() => navigate(`/select-product-amount/${product.id}?in-cart=true`)}
+                          >
+                            MODIFICAR CANTIDAD
+                          </button>
+                        ) : (
+                          <div style={{display: 'flex', flexDirection: 'row'}}>
+                            <button
+                              className="search-add-to-cart-button"
+                              onClick={() => navigate(`/select-product-amount/${product.id}`)}
+                            >
+                              AGREGAR AL CARRITO
+                            </button>
+                            <button
+                              style={{marginTop: '10px', scale:'0.75'}}
+                              onClick={() => navigate(`/select-product-amount/${product.id}`)}
+                            >
+                              MODIFICAR CANTIDAD
+                            </button>
+                          </div>
+                        )
+                      )}
                 </div>
 
-               
               </div>
 
               </li>
