@@ -2,6 +2,7 @@ import useFirestoreContext from '../../hooks/useFirestoreContext'
 import LoadingComponent from '../../components/Loading'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import EarningsModal from '../../modals/EarningModal'
 import './styles.css'
 import { use } from 'react'
 
@@ -52,7 +53,7 @@ function Inbox() {
   return (
     <div className="inbox-container">
       <LoadingComponent isLoading={isLoading} />
-      
+      <EarningsModal orders={orders} />
       {!isLoading && (
         <div className="orders-grid">
           {orders.map((order) => (
