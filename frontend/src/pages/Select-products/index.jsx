@@ -5,6 +5,7 @@ import { useOrder } from "../../hooks/useOrder";
 import { useProducts } from "../../hooks/useProducts";
 import ProductSearch from "../../components/ProductSearch";
 import qrIcon from '../../assets/icons/icons8-qr-100.png';
+import './styles.css';
 
 
 function SelectProducts() {

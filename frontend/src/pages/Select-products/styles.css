@@ -1,3 +1,18 @@
+.productCard {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    margin: 1rem;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    position: relative;
+    width: 300px; /* O el ancho que prefieras */
+}
+
+
+
 .edit-in-cart-button {
     background-color: #f0f0f0;
     border: 1px solid #f0f0f0;
