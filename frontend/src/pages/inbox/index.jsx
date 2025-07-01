@@ -56,6 +56,7 @@ function Inbox() {
       <EarningsModal orders={orders} />
       {!isLoading && (
         <div className="orders-grid">
+          <h2 style={{color: '#2c3e50', fontSize: '2rem', fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '2px solid #e55c2e', width: '100%', padding: '10px'}}> GANANCIAS INDIVIDUALES </h2>
           {orders.map((order) => (
             <div key={order.id} className="order-card">
               <div className="card-header">

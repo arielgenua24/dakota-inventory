@@ -46,13 +46,19 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-size: 19px;
+    font-weight: 600;
     padding: 1rem;
-    background: linear-gradient(135deg, #2c3e50, #3498db);
-    color: white;
+    background: #f1f1f1;
+    color: #2c3e50;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    
+
   }
   
   .order-date {
-    font-size: 0.9rem;
+    font-size: 19px;
     opacity: 0.9;
   }
   

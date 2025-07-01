@@ -68,16 +68,79 @@ const EarningsModals = ({ orders }) => {
     }]
   };
 
-  return (
-    <div>
-      <Button variant="primary" onClick={() => setShowDaily(true)} className="me-2">
-        Ver Ganancias Diarias
-      </Button>
-      <Button variant="secondary" onClick={() => setShowMonthly(true)}>
-        Ver Ganancias Mensuales
-      </Button>
+  const modalStyles = {
+    width: '100%',
+    maxHeight: '100%',
+    position: 'fixed',
+    top: '0',
+    left: '0',
+    right: '0',
+    bottom: '0',
+    zIndex: '1200',
+    backgroundColor: 'rgb(255, 255, 255)',
+    padding: '10px',
+    overflowY: 'auto'
+  }
 
-        <Modal  className="custom-modal" show={showDaily} onHide={() => setShowDaily(false)}>
+  const buttonStyles = {
+    primary: {
+      backgroundColor: '#FC6736',
+      border: 'none',
+      borderRadius: '12px',
+      padding: '12px 24px',
+      fontSize: '16px',
+      fontWeight: '600',
+      color: 'white',
+      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+      transition: 'all 0.3s ease',
+      cursor: 'pointer',
+      '&:hover': {
+        backgroundColor: '#e55c2e',
+        transform: 'translateY(-2px)',
+        boxShadow: '0 6px 8px rgba(0, 0, 0, 0.15)'
+      },
+      '&:active': {
+        transform: 'translateY(0)'
+      }
+    },
+    secondary: {
+      backgroundColor: '#f8f9fa',
+      border: '2px solid #FC6736',
+      borderRadius: '12px',
+      padding: '12px 24px',
+      fontSize: '16px',
+      fontWeight: '600',
+      color: '#FC6736',
+      marginLeft: '12px',
+      transition: 'all 0.3s ease',
+      cursor: 'pointer',
+      '&:hover': {
+        backgroundColor: '#fff0eb',
+        transform: 'translateY(-2px)',
+        boxShadow: '0 6px 8px rgba(0, 0, 0, 0.1)'
+      },
+      '&:active': {
+        transform: 'translateY(0)'
+      }
+    }
+  };
+
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', margin: '20px 0' }}>
+      <button 
+        onClick={() => setShowDaily(true)} 
+        style={buttonStyles.primary}
+      >
+        Ver Ganancias Diarias
+      </button>
+      <button 
+        onClick={() => setShowMonthly(true)}
+        style={buttonStyles.secondary}
+      >
+        Ver Ganancias Mensuales
+      </button>
+
+        <Modal  style={modalStyles} className="custom-modal" show={showDaily} onHide={() => setShowDaily(false)}>
           <Modal.Header closeButton style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem'}}>
           <Modal.Title style={{
                 padding: '15px',
@@ -124,7 +187,7 @@ const EarningsModals = ({ orders }) => {
         </Modal>
 
         {/* Modal de Ganancias Mensuales */}
-      <Modal show={showMonthly} onHide={() => setShowMonthly(false)}>
+      <Modal style={modalStyles} show={showMonthly} onHide={() => setShowMonthly(false)}>
       <Modal.Header closeButton style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem'}}>
           <Modal.Title style={{
                 padding: '15px',
