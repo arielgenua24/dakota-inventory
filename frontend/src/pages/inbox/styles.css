@@ -36,6 +36,7 @@
     /* Quitamos el max-width fijo para permitir el diseño flexible */
     flex-grow: 1;
     margin-bottom: 30px;
+    height: 1000px;
   }
   
   .order-card:hover {

@@ -77,6 +77,11 @@ const Cart = () => {
             order.customerName, 
             order.phone, 
             order.address, 
+            order.dni,
+            order.province,
+            order.postalCode,
+            order.shippingOption,
+            order.transport,
             products
           );
           if (orderResultId) {

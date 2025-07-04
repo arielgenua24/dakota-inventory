@@ -9,6 +9,11 @@ const NewOrder = () => {
     customerName: order.customerName || '',
     phone: order.phone || '',
     address: order.address || '',
+    dni: order.dni || '',
+    province: order.province || '',
+    postalCode: order.postalCode || '',
+    shippingOption: order.shippingOption || '',
+    transport: order.transport || '',
   });
 
   const navigate = useNavigate();
@@ -17,6 +22,13 @@ const NewOrder = () => {
 
   const handleChange = (e) => {
     setCustomerData({ ...customerData, [e.target.name]: e.target.value });
+  };
+
+  const handleShippingChange = (option) => {
+    setCustomerData(prevData => ({
+      ...prevData,
+      shippingOption: prevData.shippingOption === option ? '' : option,
+    }));
   };
 
   const handleNext = () => {
@@ -32,11 +44,21 @@ const NewOrder = () => {
         customerName: '',
         phone: '',
         address: '',
+        dni: '',
+        province: '',
+        postalCode: '',
+        shippingOption: '',
+        transport: '',
       });
       setOrder({
         customerName: '',
         phone: '',
         address: '',
+        dni: '',
+        province: '',
+        postalCode: '',
+        shippingOption: '',
+        transport: '',
         products: [],
       });
   
@@ -81,6 +103,61 @@ const NewOrder = () => {
         name="address"
         placeholder="Dirección"
         value={customerData.address}
+        onChange={handleChange}
+      />
+      <input
+        className="order-form-input"
+        type="text"
+        name="dni"
+        placeholder="DNI"
+        value={customerData.dni}
+        onChange={handleChange}
+      />
+      <input
+        className="order-form-input"
+        type="text"
+        name="province"
+        placeholder="Provincia - Localidad"
+        value={customerData.province}
+        onChange={handleChange}
+      />
+      <input
+        className="order-form-input"
+        type="text"
+        name="postalCode"
+        placeholder="C.P"
+        value={customerData.postalCode}
+        onChange={handleChange}
+      />
+      <div className='order-form-input'>
+        <label className='check-label'>
+          <input
+            type="checkbox"
+            name="shippingOption"
+            className='check'
+            checked={customerData.shippingOption === 'domicilio'}
+            onChange={() => handleShippingChange('domicilio')}
+          />
+          Retira en domicilio
+        </label>
+        <label className='check-label'>
+          <input
+            type="checkbox"
+            name="shippingOption"
+            className='check'
+            checked={customerData.shippingOption === 'sucursal'}
+            onChange={() => handleShippingChange('sucursal')}
+          />
+          Retira en sucursal
+        </label>
+        {customerData.shippingOption && <div className='shipping-info'>{`Okay, retira en ${customerData.shippingOption}`}</div>}
+      </div>
+      <input
+        className="order-form-input"
+        type="text"
+        name="transport"
+        placeholder="Transporte"
+        value={customerData.transport}
         onChange={handleChange}
       />
       <div className="order-form-buttons">

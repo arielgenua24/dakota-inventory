@@ -16,8 +16,7 @@ function Orders() {
   const [orders, setOrders] = useState([])
   const [QRcode, setQRcode] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const {filterOrdersByDate,  updateOrder,
-    deleteOrder, } = useFirestoreContext()
+  const {filterOrdersByDate, deleteOrder } = useFirestoreContext()
 
   const { setOrdersState } = useOrder();
 
@@ -35,7 +34,7 @@ function Orders() {
     }
     fetchOrders()
    
-  }, [filterOrdersByDate, isNewData])
+  }, [filterOrdersByDate, isNewData, setOrdersState])
   
   console.log(orders)
 
@@ -117,6 +116,16 @@ function Orders() {
                 animation: 'jump 0.5s infinite alternate', // Animación
               }}>Estado: {order.estado}⚠️</span> }
            
+           <div style={{marginTop: '20px'}}className="verify-products">
+              <button 
+                className="verify-button"
+                onClick={() => navigate(`/ProductsVerification/${order.id}/?orderEstado=${order.estado}`)}
+              >
+                Verificar Productos
+              </button>
+          </div>
+
+
             <h3>Código de orden: {order.orderCode}</h3>
             <p>Fecha: {order.fecha}</p>
           </div>
@@ -124,15 +133,12 @@ function Orders() {
             <p><strong>Cliente:</strong> {order.cliente}</p>
             <p><strong>Dirección:</strong> {order.direccion}</p>
             <p><strong>Teléfono:</strong> {order.telefono}</p>
+            {order.dni && <p><strong>DNI:</strong> {order.dni}</p>}
+            {order.province && <p><strong>Provincia - Localidad:</strong> {order.province}</p>}
+            {order.postalCode && <p><strong>C.P:</strong> {order.postalCode}</p>}
+            {order.shippingOption && <p><strong>Opción de envío:</strong> Retira en {order.shippingOption}</p>}
+            {order.transport && <p><strong>Transporte:</strong> {order.transport}</p>}
           </div>
-          <div className="verify-products">
-          <button 
-            className="verify-button"
-            onClick={() => navigate(`/ProductsVerification/${order.id}/?orderEstado=${order.estado}`)}
-          >
-            Verificar Productos
-          </button>
-    </div>
         </div>
       ))}
   </div>

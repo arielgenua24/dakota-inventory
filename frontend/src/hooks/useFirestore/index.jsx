@@ -291,7 +291,7 @@ async function addProduct(
       }
   };
 
-  const createOrderWithProducts = async (fecha, cliente, telefono, direccion, products) => {  
+  const createOrderWithProducts = async (fecha, cliente, telefono, direccion, dni, province, postalCode, shippingOption, transport, products) => {  
     console.log('llamado exitoso');
     console.log(fecha, cliente, telefono, direccion, products);
   
@@ -322,6 +322,11 @@ async function addProduct(
             cliente,
             telefono,
             direccion,
+            dni,
+            province,
+            postalCode,
+            shippingOption,
+            transport,
             estado: "pendiente",
         });
 

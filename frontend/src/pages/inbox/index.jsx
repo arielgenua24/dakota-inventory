@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import EarningsModal from '../../modals/EarningModal'
 import './styles.css'
-import { use } from 'react'
+
 
 function Inbox() {
   const [orders, setOrders] = useState([])
@@ -63,6 +63,8 @@ function Inbox() {
                 <span className="order-date">{order.fecha}</span>
                 <div className="confetti">🎉</div>
               </div>
+              <button style={{marginTop: '20px', backgroundColor: '#0e93ff', color: 'white', border: 'none', padding: '10px 20px', borderRadius: '5px', cursor: 'pointer'}}onClick={()=>{getOrderNavigation(order.id, order.estado)}}> VER LA ORDEN</button>
+
               
               <div className="card-content">
                 <div className="total-display" style={{ backgroundColor: '#0FCA37' }}>
@@ -82,12 +84,17 @@ function Inbox() {
                   <p className="detail-line">
                     Telefono: <em>{order.telefono}</em>
                   </p>
+                  {order.dni && <p className="detail-line">DNI: <strong>{order.dni}</strong></p>}
+                  {order.province && <p className="detail-line">Provincia - Localidad: <strong>{order.province}</strong></p>}
+                  {order.postalCode && <p className="detail-line">C.P: <strong>{order.postalCode}</strong></p>}
+                  {order.shippingOption && <p className="detail-line">Opción de envío: <strong>Retira en {order.shippingOption}</strong></p>}
+                  {order.transport && <p className="detail-line">Transporte: <strong>{order.transport}</strong></p>}
 
                   
                 </div>
               </div>
 
-              <button onClick={()=>{getOrderNavigation(order.id, order.estado)}}> VER LA ORDEN</button>
+              
 
             </div>
           ))}

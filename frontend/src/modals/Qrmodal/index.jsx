@@ -1,13 +1,11 @@
 import { QRCodeCanvas } from 'qrcode.react';
-import { useState } from 'react';
 import useFirestoreContext from '../../hooks/useFirestoreContext';
 import jsPDF from 'jspdf';
 import './styles.css';
-import { set } from 'date-fns';
+import PropTypes from 'prop-types';
 
 function QRmodal({ QRcode, setQRcode, orderCode }) {
-  const { getOrderById, getProductsByOrder } = useFirestoreContext();
-  const [productData, setProductData] = useState('');
+  const { getProductsByOrder } = useFirestoreContext();
 
   if (!QRcode) return 'error no hay ningun codigo QR';
 
@@ -36,8 +34,13 @@ function QRmodal({ QRcode, setQRcode, orderCode }) {
         `Dirección: ${QRcode.direccion}`,
         `Teléfono: ${QRcode.telefono}`,
         `Código de Pedido: ${QRcode.orderCode}`,
-
       ];
+
+      if (QRcode.dni) detailLines.push(`DNI: ${QRcode.dni}`);
+      if (QRcode.province) detailLines.push(`Provincia - Localidad: ${QRcode.province}`);
+      if (QRcode.postalCode) detailLines.push(`C.P: ${QRcode.postalCode}`);
+      if (QRcode.shippingOption) detailLines.push(`Opción de envío: Retira en ${QRcode.shippingOption}`);
+      if (QRcode.transport) detailLines.push(`Transporte: ${QRcode.transport}`);
   
       pdf.setFontSize(11);
       pdf.setFont('helvetica', 'bold');
@@ -195,6 +198,11 @@ function QRmodal({ QRcode, setQRcode, orderCode }) {
             <div key={index} className="QR-item">
               <h4 className="QR-title">
                  {`FECHA: ${QRcode.fecha} Pedido de: ${QRcode.cliente} Direccion: ${QRcode.direccion} Telefono: ${QRcode.telefono} Código: ${QRcode.orderCode}`}
+                 {QRcode.dni && ` DNI: ${QRcode.dni}`}
+                 {QRcode.province && ` Provincia - Localidad: ${QRcode.province}`}
+                 {QRcode.postalCode && ` C.P: ${QRcode.postalCode}`}
+                 {QRcode.shippingOption && ` Opción de envío: Retira en ${QRcode.shippingOption}`}
+                 {QRcode.transport && ` Transporte: ${QRcode.transport}`}
               </h4>
               <QRCodeCanvas className="qr-canvas" value={qrValue} size={80} />
             </div>
@@ -222,5 +230,26 @@ function QRmodal({ QRcode, setQRcode, orderCode }) {
     </div>
   );
 }
+
+QRmodal.propTypes = {
+  QRcode: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    orderCode: PropTypes.string,
+    productCode: PropTypes.string,
+    estado: PropTypes.string,
+    fecha: PropTypes.string,
+    cliente: PropTypes.string,
+    direccion: PropTypes.string,
+    telefono: PropTypes.string,
+    dni: PropTypes.string,
+    province: PropTypes.string,
+    postalCode: PropTypes.string,
+    shippingOption: PropTypes.string,
+    transport: PropTypes.string,
+    name: PropTypes.string,
+  }).isRequired,
+  setQRcode: PropTypes.func.isRequired,
+  orderCode: PropTypes.bool,
+};
 
 export default QRmodal;
