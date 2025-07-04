@@ -18,14 +18,14 @@ function QRmodal({ QRcode, setQRcode, orderCode }) {
 
     console.log(qrValue)
 
-
   const downloadPDF = async () => {
     const pdf = new jsPDF();
     const canvases = document.querySelectorAll('.qr-canvas');
   
     if (orderCode) {
       const productsByOrder = await getProductsByOrder(QRcode.id);
-      
+      console.log(productsByOrder[0])
+
       // ... código existente para detalles del pedido y QR ...
       let yPos = 10;
       const detailLines = [
@@ -94,7 +94,7 @@ function QRmodal({ QRcode, setQRcode, orderCode }) {
         pdf.text(col1, yPos + 22, `Talla: ${product.productSnapshot.size}`);
         
         // Columna derecha
-        if(product.productSnapshot.curvePrice){
+        if(product.applyCurvePrice === true){
           pdf.text(col2, yPos + 10, "Aplica precio de curva completa")
           pdf.text(col2, yPos + 16, `Precio unitario: $${formatPrice(product.productSnapshot.curvePrice)}`);
         }else{
@@ -116,7 +116,7 @@ function QRmodal({ QRcode, setQRcode, orderCode }) {
     
       // Calcular total
       const total = productsByOrder.reduce((sum, product) => {
-        if(product.productSnapshot.curvePrice){
+        if(product.applyCurvePrice === true){
           return sum + (Number(product.productSnapshot.curvePrice) * product.stock);
         }else{
           return sum + (Number(product.productSnapshot.price) * product.stock);
