@@ -37,10 +37,10 @@ function Home() {
                         <FileSpreadsheet size={20} />
                         EXCEL PARA PROVEEDOR
                     </button>
-                    <button className="excel-button">
+                    <a href="https://docs.google.com/spreadsheets/d/1fPJ8mDT7l6MlWN6PPE4mekq26P04rvn3TgDXX7oIBBs/edit?usp=sharing" target="_blank" rel="noopener noreferrer" className="excel-button">
                         <FileSpreadsheet size={20} />
                         EXCEL PARA CLIENTES
-                    </button>
+                    </a>
                 </div>
             </section>
 
