@@ -2,8 +2,8 @@ import ImageKit from "imagekit-javascript";
 import Compressor from 'compressorjs';
 
 const imagekit = new ImageKit({
-  publicKey: "public_JJwG1EFYua4sXmfsyaNxIizE/DQ=",
-  urlEndpoint: "https://ik.imagekit.io/arielgenua",
+  publicKey: import.meta.env.VITE_IMAGEKIT_PUBLIC_KEY,
+  urlEndpoint: import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT,
 });
 
 // Función para comprimir una imagen
@@ -29,11 +29,9 @@ const compressImage = (file) => {
 
   async function uploadImages(images) {
     // Usa el endpoint de autenticación en modo de pruebas
-    const authenticationEndpoint = window.location.hostname === "localhost" 
-    ? "http://localhost:3001/api/auth" 
-    : "/api/auth";    // Para producción (si el backend y el frontend están en el mismo dominio)
-    // const authenticationEndpoint = "/auth"; o /backend/auth
-  
+    // Para pruebas locales, apunta al servidor de desarrollo. ¡Recuerda cambiarlo para producción!
+    const authenticationEndpoint = "http://localhost:3001/api/auth"; 
+
     // Función auxiliar para obtener parámetros de autenticación
     const getAuthParams = async () => {
       const authResponse = await fetch(authenticationEndpoint, {
