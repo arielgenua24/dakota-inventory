@@ -29,8 +29,10 @@ const compressImage = (file) => {
 
   async function uploadImages(images) {
     // Usa el endpoint de autenticación en modo de pruebas
-    // Para pruebas locales, apunta al servidor de desarrollo. ¡Recuerda cambiarlo para producción!
-    const authenticationEndpoint = "http://localhost:3001/api/auth"; 
+    // Determina el endpoint de autenticación según el entorno (desarrollo o producción)
+    const authenticationEndpoint = import.meta.env.DEV
+      ? "http://localhost:3001/api/auth" // URL para desarrollo local
+      : "/api/auth"; // Ruta relativa para producción en Vercel 
 
     // Función auxiliar para obtener parámetros de autenticación
     const getAuthParams = async () => {
