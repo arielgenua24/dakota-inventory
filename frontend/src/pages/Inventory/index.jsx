@@ -74,9 +74,16 @@ const Inventory = () => {
       }
     }
 
+    const productName = newProduct.name.toLowerCase();
+    const productColor = newProduct.color.toLowerCase();
+
+    const finalName = productName.includes(productColor)
+      ? newProduct.name
+      : `${newProduct.name} ${newProduct.color}`;
+
     const productToSave = {
       ...newProduct,
-      name: `${newProduct.name} ${newProduct.color}`,
+      name: finalName,
     };
 
     // Se llama a addProduct según se hayan subido imágenes o no.
