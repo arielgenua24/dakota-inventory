@@ -131,58 +131,35 @@ function ProductFormModal({ handleSubmit, newProduct, setNewProduct, setIsModalO
                   ? 'Cantidad en inventario'
                   : field}
               </label>
-            {field === 'category' && (
-              <>
-                {/* Divs flotantes con las categorías permitidas */}
-                <div className="advice-input">
-                  Hector! Hace click en la cateorias que quieras😉🔥
-                </div>
-                <div className="category-float-container">
-                  {[
-                    "bermuda",
-                    "jean",
-                    "baggy",
-                    "Clásico",
-                    "ReIngreso",
-                    "joggers",
-                    "parachutte",
-                    "frisa",
-                    "Camperas",
-                    "Chalecos",
-                    "Buzos",
-                    "PocoStock"
-                  ].map((cat) => (
-                    <div
-                      key={cat}
-                      className="category-float"
-                      onClick={() =>
-                        setNewProduct({ ...newProduct, category: cat })
-                      }
-                    >
-                      {cat}
-                    </div>
-                  ))}
-                </div>
-              </>
+            {field === 'category' ? (
+              <select
+                value={newProduct.category}
+                onChange={(e) =>
+                  setNewProduct({ ...newProduct, category: e.target.value })
+                }
+                className="input"
+                required
+              >
+                <option value="" disabled selected>Selecciona una categoría</option>
+                <option value="Moms">Moms</option>
+                <option value="Baggy">Baggy</option>
+                <option value="Joggers">Joggers</option>
+                <option value="Buzos">Buzos</option>
+              </select>
+            ) : (
+              <input
+                type={field === 'price' || field === 'curvePrice' || field === 'stock' ? 'number' : 'text'}
+                value={newProduct[field]}
+                onChange={(e) =>
+                  setNewProduct({
+                    ...newProduct,
+                    [field]: e.target.value,
+                  })
+                }
+                className="input"
+                required
+              />
             )}
-            <input
-              type={field === 'price' || field === 'curvePrice' || field === 'stock' ? 'number' : 'text'}
-              value={newProduct[field]}
-              onChange={(e) =>
-                setNewProduct({
-                  ...newProduct,
-                  [field]: e.target.value,
-                })
-              }
-              className="input"
-              required
-              {...(field === 'category' && {
-                pattern:
-                  "^(bermuda|jean|baggy|Clásico|ReIngreso|joggers|parachutte|frisa|Camperas|Chalecos|Buzos|PocoStock)$",
-                title:
-                  "Solo puede escribir: bermuda, jean, baggy, Clásico, ReIngreso, joggers, parachutte, frisa, Camperas, Chalecos, Buzos, PocoStock",
-              })}
-            />
           </div>
           ))}
 
