@@ -108,7 +108,27 @@ const ProductCard = ({ product, handleDelete, onQRGenerate, onShowVariants, show
         </button>
       )}
 
-      <EditProductBtn product_id={product.id} /> 
+            <EditProductBtn product_id={product.id} />
+
+      {product.image1 && (
+        <button
+          className="glass-button"
+          onClick={() => {
+                        const baseUrl = import.meta.env.VITE_CONTENT_CREATION_URL;
+            const params = new URLSearchParams({
+              productName: product.name,
+              originalPrice: product.price,
+              discountPrice: 0,
+              tagLine: `Ofertas en Thoren`,
+              imageUrl: product.image1,
+            });
+            window.open(`${baseUrl}?${params.toString()}`, '_blank');
+          }}
+        >
+          CREAR PUBLICACIÓN
+        </button>
+      )}
+
     </div>
   );
 };

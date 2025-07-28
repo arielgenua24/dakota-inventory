@@ -37,3 +37,61 @@
     font-size: 1rem;
     color: #555;
 }
+
+/* iOS 26 Glass Effect Button */
+.glass-button {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.1) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    color: #fff;
+    padding: 12px 20px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 15px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(54, 69, 252, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, #667eea, #f320fa, #6B8DD6);
+    background-size: 400% 400%;
+    animation: gradientShift 8s ease infinite;
+    z-index: -1;
+    border-radius: 20px;
+}
+
+.glass-button:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 12px 40px rgba(54, 69, 252, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+}
+
+.glass-button:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: 0 4px 16px rgba(54, 69, 252, 0.2);
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
