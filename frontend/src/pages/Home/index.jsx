@@ -33,10 +33,10 @@ function Home() {
             <section className="section-container-excel">
                 <h2 className="section-title-excel">Descargar Excels</h2>
                 <div className="excel-buttons-container">
-                    <button className="excel-button">
+                <a href={import.meta.env.VITE_EXCEL_PROVEEDOR_URL} target="_blank" rel="noopener noreferrer" className="excel-button">
                         <FileSpreadsheet size={20} />
                         EXCEL PARA PROVEEDOR
-                    </button>
+                    </a>
                     <a href={import.meta.env.VITE_EXCEL_CLIENTES_URL} target="_blank" rel="noopener noreferrer" className="excel-button">
                         <FileSpreadsheet size={20} />
                         EXCEL PARA CLIENTES
