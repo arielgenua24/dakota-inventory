@@ -6,6 +6,7 @@ import ImageModal from "../../modals/ImageModal";
 import uploadImages from "../../services/uploadImage";
 import { format, set } from 'date-fns';
 import { es } from 'date-fns/locale';
+import { autoCompileCache } from '../../services/cacheCompiler';
 import './styles.css';
 
 function Product() {
@@ -169,6 +170,16 @@ function Product() {
       await updateProduct(updatedProduct.id, updatedProduct);
       console.log('productos agregados')
       setIsLoading(false);
+      
+      // Trigger automático de compilación de caché
+      setTimeout(() => {
+        autoCompileCache().then(result => {
+          if (result.success) {
+            console.log('Cache automatically updated after updating product');
+          }
+        });
+      }, 1000);
+      
       navigate('/inventory');
     } catch (error) {
       setIsLoading(false);

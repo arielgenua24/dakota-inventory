@@ -12,6 +12,7 @@ import qrIcon from '../../assets/icons/icons8-qr-100.png';
 import uploadImages from '../../services/uploadImage';
 import ProductCard from '../../components/ProductCard';
 import VariantsModal from '../../modals/VariantsModal';
+import { autoCompileCache, manualCompileCache } from '../../services/cacheCompiler';
 
 
 import './styles.css';
@@ -25,6 +26,9 @@ const Inventory = () => {
   const [QRcode, setQRcode] = useState("");
   const [isVariantsOpen, setIsVariantsOpen] = useState(false);
   const [baseProduct, setBaseProduct] = useState(null);
+  const [showCompilerModal, setShowCompilerModal] = useState(false);
+  const [compilerPassword, setCompilerPassword] = useState('');
+  const [compilerMessage, setCompilerMessage] = useState('');
   const [newProduct, setNewProduct] = useState({
     name: '',
     price: '',
@@ -130,6 +134,15 @@ const Inventory = () => {
       image3: '',
     });
     setIsLoading(false);
+    
+    // Trigger automático de compilación de caché
+    setTimeout(() => {
+      autoCompileCache().then(result => {
+        if (result.success) {
+          console.log('Cache automatically updated after adding product');
+        }
+      });
+    }, 1000); // Pequeño delay para asegurar que Firestore esté actualizado
   };
   
   
@@ -139,6 +152,15 @@ const Inventory = () => {
         setIsLoading(true);
         await deleteProduct(productId);
         setIsLoading(false);
+        
+        // Trigger automático de compilación de caché
+        setTimeout(() => {
+          autoCompileCache().then(result => {
+            if (result.success) {
+              console.log('Cache automatically updated after deleting product');
+            }
+          });
+        }, 1000);
       } catch (error) {
         console.error("Error al eliminar el producto:", error);
         setIsLoading(false);
@@ -146,11 +168,56 @@ const Inventory = () => {
     }
   };
 
+  const handleManualCompile = async () => {
+    setCompilerMessage('Compilando caché...');
+    const result = await manualCompileCache(compilerPassword);
+    
+    if (result.success) {
+      setCompilerMessage('✅ Caché compilado exitosamente');
+      setTimeout(() => {
+        setShowCompilerModal(false);
+        setCompilerPassword('');
+        setCompilerMessage('');
+      }, 2000);
+    } else {
+      setCompilerMessage('❌ ' + (result.message || 'Error al compilar'));
+    }
+  };
+
  
 
   return (
     <div className="container">
-      <h1 className="TITLE">CATÁLOGO</h1>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: '20px'
+      }}>
+        <h1 className="TITLE">CATÁLOGO</h1>
+        
+        {/* Botón de configuración para compilación manual */}
+        <button
+          onClick={() => setShowCompilerModal(true)}
+          style={{
+            backgroundColor: '#f0f0f0',
+            border: '1px solid #ccc',
+            borderRadius: '50%',
+            width: '40px',
+            height: '40px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            transition: 'background-color 0.3s'
+          }}
+          onMouseEnter={(e) => e.target.style.backgroundColor = '#e0e0e0'}
+          onMouseLeave={(e) => e.target.style.backgroundColor = '#f0f0f0'}
+          title="Actualizar página web"
+        >
+          ⚙️
+        </button>
+      </div>
 
       <button 
         style={{
@@ -227,6 +294,97 @@ const Inventory = () => {
           handleDelete={handleDelete}
           onQRGenerate={setQRcode}
         />
+      )}
+
+      {/* Modal de compilación manual */}
+      {showCompilerModal && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 10000
+        }}>
+          <div style={{
+            backgroundColor: 'white',
+            padding: '30px',
+            borderRadius: '10px',
+            width: '400px',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+          }}>
+            <h3 style={{ marginBottom: '20px' }}>Actualizar Página Web</h3>
+            
+            <p style={{ marginBottom: '15px', color: '#666', fontSize: '14px' }}>
+              Esta función actualiza el caché de la tienda online.
+              Se requiere contraseña de administrador.
+            </p>
+            
+            <input
+              type="password"
+              placeholder="Contraseña"
+              value={compilerPassword}
+              onChange={(e) => setCompilerPassword(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '10px',
+                marginBottom: '15px',
+                border: '1px solid #ddd',
+                borderRadius: '5px'
+              }}
+            />
+            
+            {compilerMessage && (
+              <p style={{
+                marginBottom: '15px',
+                color: compilerMessage.includes('✅') ? 'green' : 'red',
+                fontSize: '14px'
+              }}>
+                {compilerMessage}
+              </p>
+            )}
+            
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <button
+                onClick={handleManualCompile}
+                style={{
+                  flex: 1,
+                  padding: '10px',
+                  backgroundColor: '#4CAF50',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '5px',
+                  cursor: 'pointer'
+                }}
+              >
+                Compilar
+              </button>
+              
+              <button
+                onClick={() => {
+                  setShowCompilerModal(false);
+                  setCompilerPassword('');
+                  setCompilerMessage('');
+                }}
+                style={{
+                  flex: 1,
+                  padding: '10px',
+                  backgroundColor: '#f44336',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '5px',
+                  cursor: 'pointer'
+                }}
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
       )}
 
     </div>
