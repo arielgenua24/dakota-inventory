@@ -47,6 +47,7 @@ export const processJeansData = (products) => {
         img3: mainProduct.image3 || ''
       },
       price: parseInt(mainProduct.price) || 0,
+      curvePrice: parseInt(mainProduct.curvePrice) || 0,
       state: '',
       sizes: uniqueSizes
         .sort((a, b) => {
