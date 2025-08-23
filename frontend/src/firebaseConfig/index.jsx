@@ -9,5 +9,15 @@ const firebaseConfig = {
     measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
   };
 
+// Second Firebase configuration for cache project
+const firebaseCacheConfig = {
+    apiKey: import.meta.env.VITE_FIREBASE_CACHE_API_KEY,
+    authDomain: import.meta.env.VITE_FIREBASE_CACHE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_FIREBASE_CACHE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_FIREBASE_CACHE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_FIREBASE_CACHE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_FIREBASE_CACHE_APP_ID
+};
 
 export default firebaseConfig;
+export { firebaseCacheConfig };

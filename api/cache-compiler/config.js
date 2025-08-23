@@ -1,20 +1,22 @@
-import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
-
-// Configuración para la base de datos de caché
-const cacheFirebaseConfig = {
-  apiKey: process.env.VITE_FIREBASE_CACHE_API_KEY,
-  authDomain: process.env.VITE_FIREBASE_CACHE_AUTH_DOMAIN,
-  projectId: process.env.VITE_FIREBASE_CACHE_PROJECT_ID,
-  storageBucket: process.env.VITE_FIREBASE_CACHE_STORAGE_BUCKET,
-  messagingSenderId: process.env.VITE_FIREBASE_CACHE_MESSAGING_SENDER_ID,
-  appId: process.env.VITE_FIREBASE_CACHE_APP_ID,
-  measurementId: process.env.VITE_FIREBASE_CACHE_MEASUREMENT_ID
-};
-
-// Inicializar la app de Firebase para caché
-const cacheApp = initializeApp(cacheFirebaseConfig, 'cache');
-export const cacheDb = getFirestore(cacheApp);
+import admin from 'firebase-admin';
 
 // Contraseña para compilación manual
-export const COMPILER_PASSWORD = process.env.VITE_COMPILER_MANUAL_PASSWORD;
+export const COMPILER_PASSWORD = process.env.COMPILER_MANUAL_PASSWORD;
+
+// Obtener las credenciales del service account desde una variable de entorno
+// Asegúrate de que la variable FIREBASE_CACHE_SERVICE_ACCOUNT_BASE64 esté configurada
+if (!process.env.FIREBASE_CACHE_SERVICE_ACCOUNT_BASE64) {
+  throw new Error('La variable de entorno FIREBASE_CACHE_SERVICE_ACCOUNT_BASE64 no está configurada.');
+}
+
+const serviceAccount = JSON.parse(Buffer.from(process.env.FIREBASE_CACHE_SERVICE_ACCOUNT_BASE64, 'base64').toString('ascii'));
+
+// Inicializar la app de Firebase Admin para el caché si no existe
+if (!admin.apps.some(app => app.name === 'cache')) {
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+  }, 'cache');
+}
+
+// Exportar la instancia de Firestore del caché
+export const cacheDb = admin.app('cache').firestore();

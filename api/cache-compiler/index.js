@@ -1,17 +1,18 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs, doc, setDoc, deleteDoc, serverTimestamp, writeBatch } from 'firebase/firestore';
+import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import admin from 'firebase-admin';
 import { cacheDb, COMPILER_PASSWORD } from './config.js';
 import { processJeansData, partitionData } from './dataProcessor.js';
 
 // Configuración para la base de datos principal (existente)
 const mainFirebaseConfig = {
-  apiKey: process.env.VITE_FIREBASE_API_KEY,
-  authDomain: process.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.VITE_FIREBASE_APP_ID,
-  measurementId: process.env.VITE_FIREBASE_MEASUREMENT_ID
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID,
+  measurementId: process.env.FIREBASE_MEASUREMENT_ID
 };
 
 // Inicializar la app principal de Firebase
@@ -39,11 +40,11 @@ async function fetchAllProducts() {
 // Función para limpiar el caché existente
 async function clearCache() {
   try {
-    const cacheRef = collection(cacheDb, 'cached_products');
-    const snapshot = await getDocs(cacheRef);
+    const cacheRef = cacheDb.collection('cached_products');
+    const snapshot = await cacheRef.get();
     
-    const batch = writeBatch(cacheDb);
-    snapshot.forEach((doc) => {
+    const batch = cacheDb.batch();
+    snapshot.docs.forEach((doc) => {
       batch.delete(doc.ref);
     });
     
@@ -58,27 +59,27 @@ async function clearCache() {
 // Función para guardar los chunks en la base de datos de caché
 async function saveChunksToCache(chunks) {
   try {
-    const batch = writeBatch(cacheDb);
+    const batch = cacheDb.batch();
     
     chunks.forEach((chunk, index) => {
-      const docRef = doc(cacheDb, 'cached_products', `parsed_data_${index + 1}`);
+      const docRef = cacheDb.collection('cached_products').doc(`parsed_data_${index + 1}`);
       batch.set(docRef, {
         data: chunk.data,
         metadata: {
           ...chunk.metadata,
           chunkIndex: index + 1,
           totalChunks: chunks.length,
-          timestamp: serverTimestamp()
+          timestamp: admin.firestore.FieldValue.serverTimestamp()
         }
       });
     });
     
     // Guardar metadata general
-    const metaRef = doc(cacheDb, 'cache_metadata', 'general');
+    const metaRef = cacheDb.collection('cache_metadata').doc('general');
     batch.set(metaRef, {
       totalChunks: chunks.length,
       totalProducts: chunks.reduce((acc, chunk) => acc + chunk.metadata.count, 0),
-      lastCompiled: serverTimestamp(),
+      lastCompiled: admin.firestore.FieldValue.serverTimestamp(),
       version: '1.0.0'
     });
     
