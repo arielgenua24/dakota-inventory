@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
 import admin from 'firebase-admin';
-import { cacheDb, COMPILER_PASSWORD } from './config.js';
+import { getCacheDb, COMPILER_PASSWORD } from './config.js';
 import { processJeansData, partitionData } from './dataProcessor.js';
 
 // Configuración para la base de datos principal (existente)
@@ -40,6 +40,7 @@ async function fetchAllProducts() {
 // Función para limpiar el caché existente
 async function clearCache() {
   try {
+    const cacheDb = getCacheDb();
     const cacheRef = cacheDb.collection('cached_products');
     const snapshot = await cacheRef.get();
     
@@ -59,12 +60,13 @@ async function clearCache() {
 // Función para guardar los chunks en la base de datos de caché
 async function saveChunksToCache(chunks) {
   try {
+    const cacheDb = getCacheDb();
     const batch = cacheDb.batch();
     
     chunks.forEach((chunk, index) => {
       const docRef = cacheDb.collection('cached_products').doc(`parsed_data_${index + 1}`);
       batch.set(docRef, {
-        data: chunk.data,
+        product_parsed: chunk.data, // Usar product_parsed en lugar de data
         metadata: {
           ...chunk.metadata,
           chunkIndex: index + 1,
