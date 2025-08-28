@@ -67,12 +67,12 @@ async function saveChunksToCache(chunks) {
       const docRef = cacheDb.collection('cached_products').doc(`parsed_data_${index + 1}`);
       batch.set(docRef, {
         product_parsed: chunk.data, // Usar product_parsed en lugar de data
-        metadata: {
+        /*metadata: {
           ...chunk.metadata,
           chunkIndex: index + 1,
           totalChunks: chunks.length,
           timestamp: admin.firestore.FieldValue.serverTimestamp()
-        }
+        }*/
       });
     });
     

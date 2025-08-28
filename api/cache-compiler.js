@@ -87,12 +87,12 @@ async function saveChunksToCache(cacheDb, admin, chunks) {
     
     const docData = {
       product_parsed: chunk.data, // Cambiar 'data' por 'product_parsed'
-      metadata: {
+      /*metadata: {
         ...chunk.metadata,
         chunkIndex: index + 1,
         totalChunks: chunks.length,
         timestamp: admin.firestore.FieldValue.serverTimestamp()
-      }
+      } */
     };
     
     console.log(`Preparando documento parsed_data_${index + 1}:`);
