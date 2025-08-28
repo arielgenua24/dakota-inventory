@@ -58,7 +58,9 @@ function Home() {
                 </div>
 
                 <div className="inventory-grid">
-                    <Link to="/new-order" className="home-link">
+                    <div> CREACION DE PEDIDOS EN MANTENIMIENTO</div>
+                    
+                   {/*<Link to="/new-order" className="home-link">
                         <div className="inventory-item">
                             <ShoppingCart size={24} style={{ color: '#0066cc' }} />
                             <h3 className="inventory-item-title">
@@ -66,7 +68,7 @@ function Home() {
                             </h3>
                             <p className="inventory-item-description">Crea o continúa un nuevo pedido</p>
                         </div>
-                    </Link>
+                    </Link> */} 
 
                     <Link to="/orders" className="home-link">
                         <div className="inventory-item">
